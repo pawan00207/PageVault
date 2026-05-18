@@ -1,0 +1,321 @@
+/* General Styles */
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: #4f46e5aa #f1f1f1 !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fafb;
+    color: #374151;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    height: 64px;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand .navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #9333ea, #4f46e5);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #9333ea;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.profile-btn:hover {
+    color: #9333ea;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    width: 150px;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 16px;
+    color: #4b5563;
+}
+
+.dropdown-content a:hover {
+    background-color: #f3f4f6;
+}
+
+.menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.menu-btn:hover {
+    color: #9333ea;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 64px;
+    right: 0;
+    width: 200px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.mobile-menu.open {
+    display: block;
+}
+
+.mobile-menu .nav-link {
+    display: block;
+    padding: 8px 0;
+    color: #4b5563;
+}
+
+.mobile-menu .nav-link:hover {
+    color: #9333ea;
+}
+
+/* Main Content */
+.main-content {
+    padding-top: 80px;
+}
+
+.auction-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.search-filter-bar input {
+    flex: 1;
+    padding: 10px 40px 10px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.875rem;
+}
+
+.search-filter-bar select {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 220px;
+    /* Adjust based on select width */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    display: none;
+}
+
+.clear-btn:hover {
+    color: #9333ea;
+}
+
+.auction-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.auction-item {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.auction-item img {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.auction-details {
+    flex: 1;
+}
+
+.auction-details h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.auction-details p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.auction-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.register-btn,
+.notify-btn,
+.bookmark-btn,
+.view-btn {
+    padding: 8px 16px;
+    background-color: #9333ea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.register-btn:hover,
+.notify-btn:hover,
+.bookmark-btn:hover,
+.view-btn:hover {
+    background-color: #7e22ce;
+}
+
+.notify-btn {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.notify-btn:hover {
+    background-color: #e5e7eb;
+}
+
+.bookmark-btn {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.bookmark-btn.active {
+    background-color: #9333ea;
+    color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .mobile-menu.open {
+        display: block;
+    }
+
+    .auction-list {
+        grid-template-columns: 1fr;
+    }
+
+    .auction-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .auction-item img {
+        width: 100%;
+        height: auto;
+    }
+}

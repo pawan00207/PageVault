@@ -1,0 +1,489 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fafb;
+    color: #374151;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: #4f46e5aa #f1f1f1 !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+.navbar-brand .navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #9333ea, #4f46e5);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.navbar-dropdown {
+    position: relative;
+}
+
+.navbar-dropdown-btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #4b5563;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+.navbar-dropdown-btn:hover {
+    color: #9333ea;
+}
+
+.navbar-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 192px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    display: none;
+}
+
+.navbar-dropdown:hover .navbar-dropdown-content {
+    display: block;
+}
+
+.navbar-dropdown-content a {
+    display: block;
+    padding: 8px 16px;
+    color: #4b5563;
+}
+
+.navbar-dropdown-content a:hover {
+    background-color: #f3e8ff;
+}
+
+.navbar-link {
+    color: #4b5563;
+    padding: 8px 12px;
+}
+
+.navbar-link:hover {
+    color: #9333ea;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-icon {
+    color: #4b5563;
+}
+
+.navbar-icon:hover {
+    color: #9333ea;
+}
+
+.navbar-join-btn {
+    background: linear-gradient(to right, #9333ea, #4f46e5);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.navbar-join-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* About Section */
+.about-section {
+    padding-top: 80px;
+    padding-bottom: 48px;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.about-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+.about-subtitle {
+    font-size: 1.25rem;
+    color: #6b7280;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-bottom: 48px;
+}
+
+.about-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+}
+
+.about-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+.about-card-text {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* Team Section */
+.team-section {
+    margin-top: 48px;
+}
+
+.team-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.team-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.team-member-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+    object-fit: cover;
+}
+
+.team-member-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.team-member-role {
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.team-member-desc {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Footer */
+.footer {
+    background-color: #111827;
+    color: white;
+    padding: 48px 0;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+}
+
+.footer-section {
+    margin-bottom: 24px;
+}
+
+.footer-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.footer-text {
+    color: #9ca3af;
+}
+
+.footer-subtitle {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-link {
+    color: #9ca3af;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+.footer-social {
+    display: flex;
+    gap: 16px;
+}
+
+.footer-social-icon {
+    color: #9ca3af;
+    font-size: 1.25rem;
+}
+
+.footer-social-icon:hover {
+    color: white;
+}
+
+.footer-newsletter {
+    display: flex;
+}
+
+.footer-newsletter-input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.footer-newsletter-btn {
+    background-color: #9333ea;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.footer-newsletter-btn:hover {
+    background-color: #7e22ce;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fade-in-delay {
+    animation: fadeIn 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-delay-2 {
+    animation: fadeIn 0.8s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+/* Book Carousel Animation */
+.book-carousel .book-card {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+    /* Navbar */
+    .navbar-container {
+        flex-direction: row;
+        height: auto;
+        padding: 16px;
+    }
+
+    .navbar-links {
+        display: none;
+    }
+
+    .navbar-actions {
+        margin-top: 16px;
+    }
+
+    /* About Section */
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .about-title {
+        font-size: 2rem;
+    }
+
+    .about-subtitle {
+        font-size: 1rem;
+    }
+
+    /* Team Section */
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    /* Footer */
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-newsletter {
+        flex-direction: column;
+    }
+
+    .footer-newsletter-input {
+        border-radius: 4px;
+        margin-bottom: 8px;
+    }
+
+    .footer-newsletter-btn {
+        border-radius: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Navbar */
+    .navbar-logo {
+        font-size: 1.25rem;
+    }
+
+    .navbar-dropdown-btn {
+        font-size: 0.875rem;
+    }
+
+    .navbar-link {
+        font-size: 0.875rem;
+    }
+
+    .navbar-join-btn {
+        padding: 6px 12px;
+        font-size: 0.875rem;
+    }
+
+    /* About Section */
+    .about-title {
+        font-size: 1.5rem;
+    }
+
+    .about-subtitle {
+        font-size: 0.875rem;
+    }
+
+    /* Team Section */
+    .team-title {
+        font-size: 1.5rem;
+    }
+
+    .team-member-name {
+        font-size: 1rem;
+    }
+
+    .team-member-role {
+        font-size: 0.875rem;
+    }
+
+    .team-member-desc {
+        font-size: 0.75rem;
+    }
+}

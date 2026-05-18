@@ -1,0 +1,307 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getAllPublishersWithAnalytics } from '../../../services/admin.services';
+import { toast } from 'sonner';
+
+const Publishers = () => {
+  const navigate = useNavigate();
+  const [publishers, setPublishers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [sortBy, setSortBy] = useState('revenue');
+
+  useEffect(() => {
+    fetchPublishers();
+  }, []);
+
+  const fetchPublishers = async () => {
+    try {
+      setLoading(true);
+      const response = await getAllPublishersWithAnalytics();
+      setPublishers(response.data || []);
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to load publishers');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(value || 0);
+  };
+
+  // Filter and sort publishers
+  const filteredPublishers = publishers
+    .filter(pub => {
+      const matchesSearch = 
+        pub.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        pub.publishingHouse?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        pub.email?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      if (!matchesSearch) return false;
+
+      if (filterStatus === 'all') return true;
+      if (filterStatus === 'banned') return pub.account?.status === 'banned';
+      if (filterStatus === 'active') return pub.account?.status !== 'banned';
+      if (filterStatus === 'pending') return pub.moderation?.status === 'pending';
+      if (filterStatus === 'approved') return pub.moderation?.status === 'approved';
+      
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'revenue') {
+        return (b.stats?.revenue?.total || 0) - (a.stats?.revenue?.total || 0);
+      } else if (sortBy === 'books') {
+        return (b.stats?.books?.total || 0) - (a.stats?.books?.total || 0);
+      } else if (sortBy === 'name') {
+        return (a.fullName || '').localeCompare(b.fullName || '');
+      } else if (sortBy === 'date') {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      return 0;
+    });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <i className="fas fa-spinner fa-spin text-4xl text-purple-600 mb-4"></i>
+          <p className="text-gray-600">Loading publishers...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Publisher Analytics</h1>
+        <p className="text-gray-600 mt-2">Monitor all publisher activities and performance</p>
+      </div>
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-purple-100 rounded-lg p-3">
+              <i className="fas fa-building text-purple-600 text-xl"></i>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Total Publishers</p>
+              <p className="text-2xl font-bold text-gray-900">{publishers.length}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-green-100 rounded-lg p-3">
+              <i className="fas fa-rupee-sign text-green-600 text-xl"></i>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Total Revenue</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {formatCurrency(publishers.reduce((sum, p) => sum + (p.stats?.revenue?.total || 0), 0))}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-blue-100 rounded-lg p-3">
+              <i className="fas fa-book text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Total Books</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {publishers.reduce((sum, p) => sum + (p.stats?.books?.total || 0), 0)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-amber-100 rounded-lg p-3">
+              <i className="fas fa-gavel text-amber-600 text-xl"></i>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Active Auctions</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {publishers.reduce((sum, p) => sum + (p.stats?.antiqueBooks?.approved || 0), 0)}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filters and Search */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Search */}
+          <div className="relative">
+            <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input
+              type="text"
+              placeholder="Search publishers..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Filter Status */}
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          >
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="banned">Banned</option>
+            <option value="pending">Pending Approval</option>
+            <option value="approved">Approved</option>
+          </select>
+
+          {/* Sort By */}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          >
+            <option value="revenue">Sort by Revenue</option>
+            <option value="books">Sort by Books</option>
+            <option value="name">Sort by Name</option>
+            <option value="date">Sort by Join Date</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Publishers List */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Publisher
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Books
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Antiques
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Revenue
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredPublishers.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
+                    <i className="fas fa-inbox text-4xl mb-3 opacity-50"></i>
+                    <p>No publishers found</p>
+                  </td>
+                </tr>
+              ) : (
+                filteredPublishers.map((pub) => (
+                  <tr key={pub._id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4">
+                      <div>
+                        <p className="font-medium text-gray-900">{pub.fullName}</p>
+                        <p className="text-sm text-purple-600">{pub.publishingHouse}</p>
+                        <p className="text-xs text-gray-500">{pub.email}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-gray-900">
+                            {pub.stats?.books?.total || 0}
+                          </span>
+                          <span className="text-xs text-gray-500">total</span>
+                        </div>
+                        <div className="flex gap-2 text-xs">
+                          <span className="text-green-600">{pub.stats?.books?.active || 0} active</span>
+                          <span className="text-red-600">{pub.stats?.books?.deleted || 0} deleted</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-gray-900">
+                            {pub.stats?.antiqueBooks?.total || 0}
+                          </span>
+                          <span className="text-xs text-gray-500">total</span>
+                        </div>
+                        <div className="flex gap-2 text-xs">
+                          <span className="text-yellow-600">{pub.stats?.antiqueBooks?.pending || 0} pending</span>
+                          <span className="text-green-600">{pub.stats?.antiqueBooks?.approved || 0} approved</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-1">
+                        <p className="font-medium text-gray-900">
+                          {formatCurrency(pub.stats?.revenue?.total)}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {pub.stats?.revenue?.booksSold || 0} books sold
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-1">
+                        {pub.account?.status === 'banned' ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            <i className="fas fa-ban mr-1"></i> Banned
+                          </span>
+                        ) : pub.moderation?.status === 'pending' ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <i className="fas fa-clock mr-1"></i> Pending
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i className="fas fa-check-circle mr-1"></i> Active
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button
+                        onClick={() => navigate(`/admin/publishers/${pub._id}`)}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+                      >
+                        <i className="fas fa-eye"></i>
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Publishers;

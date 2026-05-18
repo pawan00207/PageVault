@@ -1,0 +1,19 @@
+# Dependency directories and lockfiles generated on the host
+node_modules
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and secrets
+
+# VCS and editor cruft
+.git
+.gitignore
+.vscode
+
+# Build/test artifacts not needed in the container context
+logs
+coverage
+dist
+client
+tests
