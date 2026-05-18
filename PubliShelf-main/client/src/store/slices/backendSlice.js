@@ -18,8 +18,8 @@ export const checkBackendHealth = createAsyncThunk(
 );
 
 const initialState = {
-  isReady: !(import.meta.env.PROD),
-  isChecking: true,
+  isReady: true, // Allow app to render even if backend not immediately available
+  isChecking: import.meta.env.PROD ? false : true, // Only check in dev
   error: null,
   attempts: 0,
   maxAttempts: 30,

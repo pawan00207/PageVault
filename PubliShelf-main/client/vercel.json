@@ -1,6 +1,10 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "env": {
+    "VITE_BACKEND_URL": "https://pagevault-server.onrender.com"
+  },
+  "envPrefix": "VITE_",
   "rewrites": [
     {
       "source": "/(.*)",
